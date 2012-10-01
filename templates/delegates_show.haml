@@ -1,0 +1,9 @@
+%table
+  -i = 0
+  -for d in @delegates do
+    %tr
+      %td
+        =d
+      %td
+        %a.del{rel: i, href: "/delegates/del/#{i}"} X
+    -i+=1

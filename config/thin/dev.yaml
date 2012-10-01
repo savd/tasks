@@ -1,0 +1,8 @@
+---
+  environment: development
+  chdir: /Users/savd/RubymineProjects/tasks
+  pid: /Users/savd/RubymineProjects/tasks/config/thin/tmp/thin.pid
+  rackup: /Users/savd/RubymineProjects/tasks/config/thin/config.ru
+  log: /Users/savd/RubymineProjects/tasks/config/thin/log/thin.log
+  daemonize: true
+  port: 4567
