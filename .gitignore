@@ -1,5 +1,6 @@
 .sass-cache
+.idea
 tasklist.tsk
 delegates.tsk
-congig/thin/log
+config/thin/log
 config/thin/tmp

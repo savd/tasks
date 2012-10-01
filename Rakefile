@@ -4,12 +4,17 @@ task :deploy do
 end
 
 task :restart do
+  cfg = %x{hostname}.strip == 'nest.local' ? 'dev' : 'prod'
   begin
-    chdir ''
-    sh 'thin -C config/thin/dev.yaml -f stop'
+    sh "thin -C config/thin/#{cfg}.yaml -f stop"
   rescue
   end
-  sh 'thin -C config/thin/dev.yaml start'
+  sh "thin -C config/thin/#{cfg}.yaml start"
+end
+
+task :stop do
+  cfg = %x{hostname}.strip == 'nest.local' ? 'dev' : 'prod'
+  sh "thin -C config/thin/#{cfg}.yaml -f stop"
 end
 
 task :run => [:deploy, :restart]
