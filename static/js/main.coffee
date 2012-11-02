@@ -2,6 +2,17 @@ $(document).onReady ->
   init()
 
 init = ->
+  navigator.id.watch
+    loggedInUser: ->
+      Xhr.load '/auth/get_mail',
+        onSuccess: @.text
+    onlogin: (assertion) ->
+    onlogout: ->
+      Xhr.load '/auth/logout',
+        onSuccess: -> window.location.reload()
+
+  $$('div#header > span.a.logout')[0].on 'click', -> doLogout()
+
   #Show tasks table
   tasks_update()
   delegates_update()
@@ -36,6 +47,12 @@ tasks_update = ->
         el.stopObserving('click').on('click', (e) -> tasks_del(e))
       $('tasks').find('td.task_body').forEach (el) ->
         el.stopObserving('dblClick').on('dblclick', (e) -> tasks_edit(e))
+      $('tasks').find('span.strike').forEach (el) ->
+        el.stopObserving('click').on('click', (e) -> tasks_strike(e))
+
+tasks_strike = (e) ->
+  e.preventDefault()
+  $('tasks').find("td[rel='#{e.target.get("rel")}']")[0].setStyle("text-decoration: line-through")
 
 tasks_del = (e) ->
   e.preventDefault()
@@ -94,3 +111,6 @@ delegates_del = (e) ->
   Xhr.load "/delegates/del/#{e.target.get 'rel'}",
     method: 'POST'
     onSuccess: -> $('delegates').fire 'changed'
+
+doLogout = ->
+  navigator.id.logout()

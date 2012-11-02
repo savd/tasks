@@ -4,7 +4,7 @@ task :deploy do
 end
 
 task :restart do
-  cfg = %x{hostname}.strip == 'nest.local' ? 'dev' : 'prod'
+  cfg = %x{hostname}.strip == 'vagrant' ? 'dev' : 'prod'
   begin
     sh "thin -C config/thin/#{cfg}.yaml -f stop"
   rescue
@@ -13,7 +13,7 @@ task :restart do
 end
 
 task :stop do
-  cfg = %x{hostname}.strip == 'nest.local' ? 'dev' : 'prod'
+  cfg = %x{hostname}.strip == 'vagrant' ? 'dev' : 'prod'
   sh "thin -C config/thin/#{cfg}.yaml -f stop"
 end
 

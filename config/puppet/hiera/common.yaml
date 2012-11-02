@@ -1,0 +1,6 @@
+---
+  project: 'tasks'
+  document_root: '/vagrant'
+  ruby_version:  'ruby-1.9.3-p194'
+  gems: [bundler, rake, puppet]
+  packages: [gcc-c++, sqlite3-devel]

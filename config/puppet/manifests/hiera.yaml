@@ -1,0 +1,8 @@
+---
+:backends: yaml
+:logger: console
+:hierarchy:
+  - "%{fqdn}"
+  - common
+:yaml:
+  :datadir: /etc/puppet/hiera

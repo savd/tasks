@@ -5,13 +5,26 @@ require 'sinatra'
 require 'sass'
 require 'haml'
 require 'sinatra/reloader'
+require './lib/auth.rb'
 
 set :root, File.dirname(__FILE__)
 set :public_folder => File.join(File.dirname(__FILE__), 'static')
 set :views, File.join(File.dirname(__FILE__), 'templates')
 set :sass, :views => File.join(File.dirname(__FILE__), 'static/sass')
+set :environment => :development
+
+
+enable :sessions
+
+helpers do
+  def authorized?
+    session[:auth] == 'Okay'
+  end
+end
 
 get '/' do
+  redirect to '/auth/login' unless authorized?
+  @mail = session[:mail] || 'Not logged in'
   haml :index
 end
 
@@ -44,8 +57,8 @@ post '/tasks/save/:id' do
   halt 200
 end
 
-get '/css/main.css' do
-  sass :main
+get '/css/:file.css' do
+  sass @params[:file].to_sym
 end
 
 get '/delegates/show' do

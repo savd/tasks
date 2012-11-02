@@ -1,5 +1,6 @@
 .sass-cache
 .idea
+.vagrant
 tasklist.tsk
 delegates.tsk
 config/thin/log
