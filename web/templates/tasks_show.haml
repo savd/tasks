@@ -1,0 +1,10 @@
+%table
+  - i = 0
+  - for task in @tasks do
+    %tr
+      %td{class: 'task_body', rel: i}= task
+      %td
+        %span.strike{rel: i} V
+      %td
+        %a.del{href: "/tasks/del/#{i}", rel: i, class: 'task_del'} X
+    - i+=1
