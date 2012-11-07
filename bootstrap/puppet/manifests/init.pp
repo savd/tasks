@@ -37,7 +37,7 @@ node default {
 
     add_host { "pm.dev":
         name => "pm.dev",
-        ip => "192.168.64.4",
+        ip => "192.168.64.2",
     }
 
     file { "/etc/puppet/puppet.conf":
@@ -59,67 +59,48 @@ node default {
         enable => true,
     }
 
-    file { "/etc/resolv.conf":
-        ensure => present,
-        content => "search dev\nnameserver 8.8.8.8\n",
-        owner => "root",
-        mode => "0644",
-    }
-
 }
 
 #Special treat for Puppet Master
 node 'pm.dev' {
     $gemdir = "/usr/local/rvm/gems/1.9.3-p194@global"
 
-    File["/etc/resolv.conf"] -> Class["ruby"] -> User["puppet"] -> Exec["puppet master"]
+    Package["ccache"] -> Package["puppet"] -> User["puppet"] -> Exec["puppet master"]
 
-    file { "/etc/resolv.conf":
-        ensure => present,
-        content => "search dev\nnameserver 8.8.8.8\n",
-        owner => "root",
-        mode => "0644",
-    }
-
-    class { ruby:
-        version => '1.9.3-p194',
-        gems => [facter, hiera, hiera-puppet, puppet]
+    package { [facter, hiera, hiera-puppet, puppet]:
+        provider => gem,
+        ensure => installed,
     }
 
     user { puppet: ensure => present }
 
-    exec { 'puppet master':
-        unless => 'lsof -i4tcp:8140',
-        path => "$gemdir/bin:$path",
-    }
+    package { ["ccache"]: ensure => installed }
 
-    exec { "restart puppet":
-        command => "pkill -f puppet",
-        path => "${path}",
-        notify => Exec["puppet master"],
-        refreshonly => true,
+    exec {
+        "puppet master":
+            unless => 'lsof -i4tcp:8140',
+            path => "$gemdir/bin:$path";
+        "restart puppet":
+            command => "pkill -f puppet",
+            path => "${path}",
+            notify => Exec["puppet master"],
+            refreshonly => true;
     }
 
     file {"/etc/puppet/autosign.conf":
         content => "*.dev\n",
         ensure => present,
-        owner => "root",
         mode => "0644",
     }
 
     add_host { "web.dev":
         name => "web.dev",
-        ip => "192.168.64.2",
+        ip => "192.168.64.3",
     }
 
     add_host { "db.dev":
         name => "db.dev",
-        ip => "192.168.64.3",
-    }
-
-    file { "/etc/puppet/hiera.yaml":
-        ensure => link,
-        target => "/etc/puppet/manifests/hiera.yaml",
+        ip => "192.168.64.4",
     }
 
 }

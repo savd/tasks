@@ -1,8 +1,0 @@
----
-  environment: production
-  chdir: /home/savd/tasks
-  pid: /home/savd/tasks/config/thin/tmp/thin.pid
-  rackup: /home/savd/tasks/config/thin/config.ru
-  log: /home/savd/tasks/config/thin/log/thin.log
-  daemonize: true
-  port: 4567

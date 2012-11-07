@@ -1,0 +1,4 @@
+---
+  ruby_version:  'ruby-1.9.3-p194'
+  gems: [bundler, rake, puppet]
+  packages: [gcc-c++, ccache, sqlite3-devel]

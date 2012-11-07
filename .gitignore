@@ -3,5 +3,6 @@
 .vagrant
 tasklist.tsk
 delegates.tsk
-config/thin/log
-config/thin/tmp
+web/Gemfile.lock
+web/config/thin/tmp/
+web/config/thin/log/thin.log
